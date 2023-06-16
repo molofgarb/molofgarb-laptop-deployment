@@ -28,5 +28,5 @@ cmd /c "wmic computersystem where name='%computername%' call rename name='%new_n
 echo:
 
 echo If "ReturnValue = 0", then the name change was successful.
-echo:
-pause
+echo Press any key to close. . .
+pause > nul
