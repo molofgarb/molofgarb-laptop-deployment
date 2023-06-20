@@ -22,11 +22,9 @@ echo:
 :: Set New Name
 set new_name=%prefix%-%ser_tag%
 
-echo The new computer name will be: %new_name%
-echo:
 cmd /c "wmic computersystem where name='%computername%' call rename name='%new_name%'"
-echo:
+cls
 
-echo If "ReturnValue = 0", then the name change was successful.
-echo Press any key to close. . .
+echo The new computer name is: %new_name%
+echo Press any key to close. . . 
 pause > nul

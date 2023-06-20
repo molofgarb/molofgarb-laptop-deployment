@@ -10,7 +10,6 @@ echo Windows 10 Pro Product Key: %key%
 slmgr.vbs /ipk %key%
 
 echo:
-echo:
 echo Windows 10 Pro activated!
 echo Press any key to close. . . 
 pause > nul

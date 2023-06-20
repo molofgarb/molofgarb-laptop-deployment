@@ -2,6 +2,7 @@
 :: Note: you need to have an unpacked clonezilla partition files in a 
 ::       child folder named "Clonezilla Bootable" for the script to work,
 ::       otherwise it will exit
+:: This script should be run on a Latitude 5320 with one internal disk
 
 @echo off
 cd %~dp0
@@ -28,7 +29,8 @@ echo:
 findstr /c:"Disk" diskparttemplog.txt
 echo:
 echo:
-echo Do you want to set up Disk %disk_num% for Clonezilla? (y/n) (default:n)
+echo Do you want to set up Disk %disk_num% for Clonezilla? (y/N) (default:n)
+echo Please make sure Disk %disk_num% is NOT AN INTERNAL DISK. Disk %disk_num% will be PERMANENTLY WIPED.
 
 set input=n
 set /p input=
