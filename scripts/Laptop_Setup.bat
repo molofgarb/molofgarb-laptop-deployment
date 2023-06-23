@@ -1,7 +1,5 @@
-:: Used to set up Latitude 5320. Please clone using latest image before running
-:: this script.
+:: Used to set up Latitude 5320. Please clone using latest image before running this script.
 :: This script needs a file "secrets.txt", the KMS installer, and "Laptop_Setup_secret.bat" in the same directory
-
 
 @echo off
 cd %~dp0
