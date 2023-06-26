@@ -1,7 +1,7 @@
 :: Used to create a Clonezilla drive with clonezilla & image partition
-:: Note: you need to have an unpacked clonezilla partition files in a 
-::       child folder named "Clonezilla Bootable" for the script to work,
-::       otherwise it will exit
+:: This script needs the files:
+::      /Clonezilla Bootable   - a directory containing the contents of Clonezilla
+::      RemoveDrive.exe        - an executable that ejects the disk when given a volume letter argument
 :: This script should be run on a Latitude 5320 with one internal disk
 
 @echo off
