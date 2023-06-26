@@ -1,4 +1,6 @@
 .DS_Store
-*.txt
+
 *.msi
-Laptop_Setup_secret.bat
+secrets.txt
+Laptop_Setup_compmgmt.bat
+Laptop_Setup_bitlocker.bat

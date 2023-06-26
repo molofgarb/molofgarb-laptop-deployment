@@ -1,0 +1,1 @@
+Start-Transcript "ping_output.txt"; ping.exe -t 8.8.8.8|Foreach{"{0} - {1}" -f (Get-Date),$_}; Stop-Transcript

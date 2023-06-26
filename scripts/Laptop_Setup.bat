@@ -1,14 +1,23 @@
 :: Used to set up Latitude 5320. Please clone using latest image before running this script.
-:: This script needs a file "secrets.txt", the KMS installer, and "Laptop_Setup_secret.bat" in the same directory
+:: This script needs the files:
+::      secrets.txt                 - a file containing KMS, BitLocker, and password information
+::      <KMS installer>.msi         - an installer for the KMS for Microsoft Office activation
+::      Laptop_Setup_compmgmt.bat   - a batch file with user account configurations
+::      Laptop_Setup_bitlocker.bat  - a batch file with BitLocker setup commands
+::
+:: Templates have been provided for the two batch files that this script requires.
+:: If you have any questions or issues, please contact the author of this script.
 
 @echo off
-cd %~dp0
+cd /d "%~dp0"
 
+:: MACROS
 set "header=cls & echo =============================================================================== & echo Latitude 5320 Setup Script & echo =============================================================================== & echo."
 set "pause_until_done=echo Press any key to continue. . . & pause > nul"
 
 
 :: ===== CONNECT TO INTERNET ==================================================
+
 :Check_Internet
 %header%
 echo Please connect to the internet (Wi-Fi or Ethernet).
@@ -31,6 +40,7 @@ if %errorlevel% == 0 (
 )
 :Check_Internet_Up
 
+:Syncrhonize_Time
 %header%
 echo Synchronizing time. . .
 
@@ -44,8 +54,8 @@ echo Time sync complete.
 
 
 :: ===== UPDATES ==============================================================
-:Start_Windows_Update
 
+:Start_Windows_Update
 %header%
 echo This script will open the Windows Update panel to start a Windows Update check.
 %pause_until_done%
@@ -87,6 +97,7 @@ echo Please make sure that Zoom is updated to the latest version.
 
 
 :: ===== COMPUTER NAME ========================================================
+
 :Start_compname
 :: Get Service Tag
 wmic bios get serialnumber | findstr /v "SerialNumber" > temp.txt
@@ -98,11 +109,10 @@ del temp.txt
 
 
 :: Get Prefix (from user)
-set prefix=XXX
-
 %header%
 echo The prefix (e.g. REG) is: 
 
+set prefix=XXX
 set /p prefix=
 echo:
 
@@ -117,12 +127,22 @@ echo The new computer name is: %new_name%
 
 
 :: ===== ACCOUNT MANAGEMENT ===================================================
-call Laptop_Setup_secret.bat
+
+:: required variables are: header, pause_until_done, prefix
+if exist Laptop_Setup_compmgmt.bat (
+    call Laptop_Setup_compmgmt.bat
+) else (
+    %header%
+    echo Please set up the user accounts in Computer Management.
+    %pause_until_done%
+)
+
 if not %errorlevel% == 0 (
     goto Start_compname
 )
 
 :: ===== MICROSOFT OFFICE =====================================================
+
 for /f %%i IN (secrets.txt) DO if not defined line set "result=%%i" & goto Start_KMS_done
 :Start_KMS_done
 start /b %result%
@@ -130,6 +150,7 @@ start /b %result%
 %header%
 echo Connect to VPN.
 %pause_until_done%
+
 :Start_Office_Wait
 %header%
 echo We will wait at least 5 minutes for Microsoft Office activation. . .
@@ -159,16 +180,21 @@ echo:
 echo Windows 10 Pro activated!
 %pause_until_done%
 
+:: ===== BITLOCKER ============================================================
 
-:: ===== BITLOCKER AND BIOS PASSWORD ==========================================
+:: required variables are: header, pause_until_done, ser_tag
+if exist Laptop_Setup_bitlocker.bat (
+    call Laptop_Setup_bitlocker.bat
+) else (
+    %header%
+    echo Please set up BitLocker.
+    %pause_until_done%
+)
+
+:: ===== BIOS PASSWORD AND MAC ================================================
+
 %header%
-echo Please set up BitLocker, BIOS password, and MAC address pass-through according to the setup instructions document. 
+echo Please set up BIOS password and MAC address pass-through according to the setup instructions document. 
 echo The script will end now.
 echo.
 echo Press any key to exit. . . & pause > nul
-
-
-:: Credits
-:: https://stackoverflow.com/questions/1788473/while-loop-in-batch
-:: https://stackoverflow.com/questions/9329749/batch-errorlevel-ping-response
-:: https://www.dell.com/support/manuals/en-us/command-update/dellcommandupdate_rg/dell-command-|-update-cli-commands?guid=guid-92619086-5f7c-4a05-bce2-0d560c15e8ed&lang=en-us
