@@ -24,7 +24,7 @@ set /p volume_input=
 
 %header%
 manage-bde.exe -protectors -get C: -t recoverypassword > "%volume_input%:\BitLocker Recovery Key.txt"
-echo BitLocker recovery password successfully saved to file: %volume_input%:\BitLocker Recovery Key
+echo BitLocker recovery password successfully saved to file: %volume_input%:\BitLocker Recovery Key.txt
 %pause_until_done%
 
 cd /d "%~dp0"
