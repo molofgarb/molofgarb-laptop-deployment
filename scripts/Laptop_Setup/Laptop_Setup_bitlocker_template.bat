@@ -26,7 +26,7 @@ manage-bde.exe -on C: -rp -tp %bitlocker_PIN%
 (echo List Volume) | diskpart 
 set volume_input=C
 echo Which volume root should the BitLocker recovery password be saved to? Please enter a single capital letter. (default:C)
-set /p volume_input=
+set /p "volume_input=Volume: "
 
 %header%
 manage-bde.exe -protectors -get C: -t recoverypassword > "%volume_input%:\BitLocker Recovery Key.txt"

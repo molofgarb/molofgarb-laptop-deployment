@@ -1,6 +1,6 @@
 :: Used to set up Latitude 5320. Please clone using latest image before running this script.
 :: This script needs the files:
-::      Laptop_Setup_secrets.txt                 - a file containing KMS, BitLocker, and password information
+::      Laptop_Setup_secrets.txt    - a file containing KMS, BitLocker, and password information
 ::      <KMS installer>.msi         - an installer for the KMS for Microsoft Office activation
 ::      Laptop_Setup_compmgmt.bat   - a batch file with user account configurations
 ::      Laptop_Setup_bitlocker.bat  - a batch file with BitLocker setup commands
@@ -113,7 +113,7 @@ del temp.txt
 echo The prefix (e.g. REG) is: 
 
 set prefix=XXX
-set /p prefix=
+set /p "prefix=Prefix: "
 echo:
 
 :: Set New Name
@@ -143,7 +143,7 @@ if not %errorlevel% == 0 (
 
 :: ===== MICROSOFT OFFICE =====================================================
 
-for /f %%i IN (Laptop_Setup_secrets.txt) DO if not defined line set "result=%%i" & goto Start_KMS_done
+for /f %%i IN (%secrets%) DO if not defined line set "result=%%i" & goto Start_KMS_done
 :Start_KMS_done
 start /b %result%
 
@@ -160,8 +160,7 @@ start "" "C:\Program Files\Microsoft Office\Office16\WINWORD.EXE"
 
 %header%
 echo Is Microsoft Office activated? (y/N) (default:n)
-set "answer=n"
-set /p "answer="
+set /p "answer=Answer: "
 
 if /I "%answer%" == "n" (
     goto Start_Office_Wait

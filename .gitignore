@@ -4,3 +4,6 @@
 Laptop_Setup_secrets.txt
 Laptop_Setup_compmgmt.bat
 Laptop_Setup_bitlocker.bat
+
+User_Setup_defaultappassoc.xml
+User_Setup_secrets.txt
