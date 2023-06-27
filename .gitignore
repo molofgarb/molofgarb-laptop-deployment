@@ -1,6 +1,6 @@
 .DS_Store
 
 *.msi
-secrets.txt
+Laptop_Setup_secrets.txt
 Laptop_Setup_compmgmt.bat
 Laptop_Setup_bitlocker.bat

@@ -1,3 +1,9 @@
+:: This script should be called from Laptop_Setup.bat because it depends on variables set in the parent script.
+:: This script needs the files:
+::      Laptop_Setup_secrets.txt                 - a file containing KMS, BitLocker, and password information
+::
+:: If you have any questions or issues, please contact the author of this script.
+
 @echo off
 cd %~dp0
 
@@ -15,7 +21,7 @@ net user admin1 /Active:No
 net user admin2 /Active:Yes
 net user admin3 /Active:No
 
-for /f "skip=2" %%i IN (secrets.txt) DO if not defined line set "result=%%i" & goto XXX_staff_done
+for /f "skip=2" %%i IN (%secrets%) DO if not defined line set "result=%%i" & goto XXX_staff_done
 
 :XXX_staff_done
 net user staff2 "%result%"

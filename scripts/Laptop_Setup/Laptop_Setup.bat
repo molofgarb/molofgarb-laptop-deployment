@@ -1,6 +1,6 @@
 :: Used to set up Latitude 5320. Please clone using latest image before running this script.
 :: This script needs the files:
-::      secrets.txt                 - a file containing KMS, BitLocker, and password information
+::      Laptop_Setup_secrets.txt                 - a file containing KMS, BitLocker, and password information
 ::      <KMS installer>.msi         - an installer for the KMS for Microsoft Office activation
 ::      Laptop_Setup_compmgmt.bat   - a batch file with user account configurations
 ::      Laptop_Setup_bitlocker.bat  - a batch file with BitLocker setup commands
@@ -14,7 +14,7 @@ cd /d "%~dp0"
 :: MACROS
 set "header=cls & echo =============================================================================== & echo Latitude 5320 Setup Script & echo =============================================================================== & echo."
 set "pause_until_done=echo Press any key to continue. . . & pause > nul"
-
+set "secrets=Laptop_Setup_secrets.txt"
 
 :: ===== CONNECT TO INTERNET ==================================================
 
@@ -143,7 +143,7 @@ if not %errorlevel% == 0 (
 
 :: ===== MICROSOFT OFFICE =====================================================
 
-for /f %%i IN (secrets.txt) DO if not defined line set "result=%%i" & goto Start_KMS_done
+for /f %%i IN (Laptop_Setup_secrets.txt) DO if not defined line set "result=%%i" & goto Start_KMS_done
 :Start_KMS_done
 start /b %result%
 

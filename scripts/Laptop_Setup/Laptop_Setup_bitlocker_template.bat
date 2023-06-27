@@ -1,3 +1,9 @@
+:: This script should be called from Laptop_Setup.bat because it depends on variables set in the parent script.
+:: This script needs the files:
+::      Laptop_Setup_secrets.txt                 - a file containing KMS, BitLocker, and password information
+::
+:: If you have any questions or issues, please contact the author of this script.
+
 @echo off
 cd /d "%~dp0"
 
