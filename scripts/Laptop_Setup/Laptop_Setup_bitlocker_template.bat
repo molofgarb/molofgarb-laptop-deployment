@@ -7,20 +7,20 @@
 @echo off
 cd /d "%~dp0"
 
-if not defined header (
-    set "header=cls & echo =============================================================================== & echo Latitude 5320 Setup Script & echo =============================================================================== & echo."
-    set "pause_until_done=echo Press any key to continue. . . & pause > nul"
-    set "secrets=Laptop_Setup_secrets.txt"
-)
+@REM if not defined header (
+@REM     set "header=cls & echo =============================================================================== & echo Latitude 5320 Setup Script & echo =============================================================================== & echo."
+@REM     set "pause_until_done=echo Press any key to continue. . . & pause > nul"
+@REM     set "secrets=Laptop_Setup_secrets.txt"
+@REM )
 
-if not defined ser_tag (
-    wmic bios get serialnumber | findstr /v "SerialNumber" > temp.txt
+@REM if not defined ser_tag (
+@REM     wmic bios get serialnumber | findstr /v "SerialNumber" > temp.txt
 
-    set /p ser_tag= <temp.txt
-    set ser_tag=%ser_tag: =%
+@REM     set /p ser_tag= <temp.txt
+@REM     set ser_tag=%ser_tag: =%
 
-    del temp.txt
-)
+@REM     del temp.txt
+@REM )
 
 :: Creates PIN using our format
 :Bitlocker_PIN_create

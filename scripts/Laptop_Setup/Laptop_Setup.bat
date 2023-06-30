@@ -135,9 +135,7 @@ set "curlerr=%errorlevel%"
 
 %header%
 if %curlerr% == 0 (
-    if not %pingerr% == 0 (
-        goto VPN_Up
-    )
+    goto VPN_Up
 )
 
 :VPN_Down

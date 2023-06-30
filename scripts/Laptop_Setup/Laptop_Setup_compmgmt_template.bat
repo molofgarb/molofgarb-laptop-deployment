@@ -5,22 +5,22 @@
 :: If you have any questions or issues, please contact the author of this script.
 
 @echo off
-cd %~dp0
+cd /d "%~dp0"
 
-if not defined header (
-    set "header=cls & echo =============================================================================== & echo Latitude 5320 Setup Script & echo =============================================================================== & echo."
-    set "pause_until_done=echo Press any key to continue. . . & pause > nul"
-    set "secrets=Laptop_Setup_secrets.txt"
-)
+@REM if not defined header (
+@REM     set "header=cls & echo =============================================================================== & echo Latitude 5320 Setup Script & echo =============================================================================== & echo."
+@REM     set "pause_until_done=echo Press any key to continue. . . & pause > nul"
+@REM     set "secrets=Laptop_Setup_secrets.txt"
+@REM )
 
-if not defined prefix (
-    %header%
-    echo The prefix (e.g. REG) is: 
+@REM if not defined prefix (
+@REM     %header%
+@REM     echo The prefix (e.g. REG) is: 
 
-    set prefix=XXX
-    set /p "prefix=Prefix: "
-    echo.
-)
+@REM     set prefix=XXX
+@REM     set /p "prefix=Prefix: "
+@REM     echo.
+@REM )
 
 :: Switch to case depending on prefix
 :Start_compmgmt
