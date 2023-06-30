@@ -16,31 +16,46 @@ set "header=cls & echo =========================================================
 set "pause_until_done=echo Press any key to continue. . . & pause > nul"
 set "secrets=Laptop_Setup_secrets.txt"
 
+:: ===== CHECK ADMINISTRATOR ==================================================
+
+%header%
+net session >nul 2>&1
+    if %errorLevel% == 0 (
+        echo.
+    ) else (
+        echo Please run this script again as an administrator.
+        echo The script will end now.
+        echo.
+        echo Press any key to exit. . . & pause > nul
+    )
+
 :: ===== CONNECT TO INTERNET ==================================================
 
-:Check_Internet
 %header%
+:Check_Internet
 echo Please connect to the internet (Wi-Fi or Ethernet).
 %pause_until_done%
 
-set "testhost=8.8.8.8"
+curl google.com
 
-ping -n 1 "%testhost%" | findstr /r /c:"[0-9] *ms"
-
+%header%
 if %errorlevel% == 0 (
-    %header%
-    echo The connection is up.
-    %pause_until_done%
-    goto Check_Internet_Up
+    goto Internet_Up
 ) else (
-    %header%
-    echo The connection is down. (or you're on VPN; please disconnect from VPN^)
-    %pause_until_done%
-    goto Check_Internet
+    goto Internet_Down
 )
-:Check_Internet_Up
 
-:Syncrhonize_Time
+:Internet_Down
+echo The connection is down.
+echo.
+goto Check_Internet
+
+:Internet_Up
+echo The connection is up.
+%pause_until_done%
+goto Synchronize_Time
+
+:Synchronize_Time
 %header%
 echo Synchronizing time. . .
 
@@ -51,7 +66,6 @@ echo.
 
 echo Time sync complete.
 %pause_until_done%
-
 
 :: ===== UPDATES ==============================================================
 
@@ -66,6 +80,7 @@ start "" C:\Windows\System32\control.exe /name Microsoft.WindowsUpdate
 echo Please install Windows updates.
 %pause_until_done%
 
+
 :Start_Dell_Update
 :: NOTE: this runs in the background
 %header%
@@ -77,7 +92,8 @@ start "" "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" /applyUpdates -reboot
 echo This script will open Chrome and Firefox to start an update check.
 %pause_until_done%
 
-:Open_Browser_Update
+
+:Start_Browser_Update
 start "" "C:\Program Files\Google\Chrome\Application\chrome.exe"
 start "" "C:\Program Files\Mozilla Firefox\firefox.exe"
 
@@ -85,6 +101,8 @@ start "" "C:\Program Files\Mozilla Firefox\firefox.exe"
 echo Please manually update Chrome and Firefox.
 %pause_until_done%
 
+
+:Start_Zoom_Update
 %header%
 echo This script will open Zoom to start an update check.
 %pause_until_done%
@@ -95,6 +113,39 @@ start "" "C:\Program Files\Zoom\bin\Zoom.exe"
 echo Please make sure that Zoom is updated to the latest version.
 %pause_until_done%
 
+:: :: ===== MICROSOFT OFFICE START ============================================
+
+for /f %%i IN (%secrets%) DO if not defined line set "result=%%i" & goto Start_KMS_done
+:Start_KMS_done
+start /b %result%
+
+%header%
+:VPN_Test
+echo Connect to VPN.
+%pause_until_done%
+
+:: Note: ICMP pings are blocked by split tunnel VPN connections (at least in my VPN)
+
+set "testhost=8.8.8.8"
+ping -n 1 "%testhost%" | findstr /r /c:"[0-9] *ms"
+set "pingerr=%errorlevel%"
+
+curl google.com
+set "curlerr=%errorlevel%"
+
+%header%
+if %curlerr% == 0 (
+    if not %pingerr% == 0 (
+        goto VPN_Up
+    )
+)
+
+:VPN_Down
+echo The VPN connection is down.
+echo.
+goto VPN_Test
+
+:VPN_Up
 
 :: ===== COMPUTER NAME ========================================================
 
@@ -114,7 +165,7 @@ echo The prefix (e.g. REG) is:
 
 set prefix=XXX
 set /p "prefix=Prefix: "
-echo:
+echo.
 
 :: Set New Name
 set new_name=%prefix%-%ser_tag%
@@ -141,21 +192,15 @@ if not %errorlevel% == 0 (
     goto Start_compname
 )
 
-:: ===== MICROSOFT OFFICE =====================================================
-
-for /f %%i IN (%secrets%) DO if not defined line set "result=%%i" & goto Start_KMS_done
-:Start_KMS_done
-start /b %result%
-
-%header%
-echo Connect to VPN.
-%pause_until_done%
+:: ===== MICROSOFT OFFICE CHECK ===============================================
+goto Check_Office
 
 :Start_Office_Wait
 %header%
 echo We will wait at least 5 minutes for Microsoft Office activation. . .
 timeout /t 300
 
+:Check_Office
 start "" "C:\Program Files\Microsoft Office\Office16\WINWORD.EXE"
 
 %header%
@@ -197,3 +242,7 @@ echo Please set up BIOS password and MAC address pass-through according to the s
 echo The script will end now.
 echo.
 echo Press any key to exit. . . & pause > nul
+
+:: ============================================================================
+:: ===== FUNCTIONS ============================================================
+:: ============================================================================

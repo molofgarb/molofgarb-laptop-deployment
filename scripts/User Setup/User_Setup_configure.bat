@@ -59,15 +59,24 @@ echo Please set Word to install updates only.
 %pause_until_done%
 
 
-:OneDrive
-%header%
-echo Please open the hidden items menu in the taskbar, right click on OneDrive, click on settings, and then disable OneDrive from automatically starting.
-%pause_until_done%
+@REM :OneDrive
+@REM %header%
+@REM echo OneDrive will be disabled on startup.
+@REM %pause_until_done%
+@REM powershell "Get-Process -IncludeUserName -Name explorer | Select-Object UserName -Unique" > temp.txt
+
+@REM reg load HKU\<username> C:\Users\<username>\ntuser.dat
+@REM reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run" /v "OneDrive"
+@REM reg unload HKU\<>
 
 
 :WindowSecurity
 %header%
-echo Please open the hidden items menu in the taskbar, open the Windows Security Panel, and dismiss the security concerns.
+echo This script will open the Windows security settings panel.
+%pause_until_done%
+start windowsdefender:
+%header%
+echo Please dismiss the security concerns.
 %pause_until_done%
 
 :: ===== SETTINGS ===================================================

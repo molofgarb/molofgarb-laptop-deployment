@@ -7,6 +7,21 @@
 @echo off
 cd %~dp0
 
+if not defined header (
+    set "header=cls & echo =============================================================================== & echo Latitude 5320 Setup Script & echo =============================================================================== & echo."
+    set "pause_until_done=echo Press any key to continue. . . & pause > nul"
+    set "secrets=Laptop_Setup_secrets.txt"
+)
+
+if not defined prefix (
+    %header%
+    echo The prefix (e.g. REG) is: 
+
+    set prefix=XXX
+    set /p "prefix=Prefix: "
+    echo.
+)
+
 :: Switch to case depending on prefix
 :Start_compmgmt
 goto case_compmgmt_%prefix%
