@@ -1,0 +1,191 @@
+<h1 id="laptop-setup-scripts">Laptop Setup Scripts</h1>
+<p>Table of Contents:</p>
+<ul>
+<li>Laptop Setup Scripts -- How to Use</li>
+<li>Important Notes</li>
+<li>Latitude 5320 - Laptop_Setup_prep.bat</li>
+<li>Latitude 5320 - Laptop_Setup_update.bat</li>
+<li>Latitude 5320 - User_Setup_create.bat</li>
+<li>Latitude 5320 - User_Setup_configure.bat</li>
+</ul>
+<h2 id="laptop-setup-scripts-how-to-use">Laptop Setup Scripts -- How to Use</h2>
+<p>The contents of this directory should be placed on an external drive (USB drive)<br>and the script should be run directly from the USB drive. It is not recommended<br>to run the script from the system drive, but nothing other than maybe BitLocker<br>recovery password storage should break if you do. It is recommended that you<br>run this script from the same drive that holds Clonezilla images for the device<br>being set up so that you can start the script immediately after imaging has finished.<br>For example, the path to this folder should be something like:<br>D:\Laptop_Setup\</p>
+<ul>
+<li>NOTE: There have been issues in the past with running the script in a path<br>that has a space in its name (e.g. D:\Laptop Setup). This issue should be fixed,<br>but if the script has behaving oddly, try running it from a path with no spaces.</li>
+</ul>
+<p>To start the script, run (double-click in File Explorer) a main menu script in<br>this directory. Main menu scripts are usually named &lt;device_name&gt;_Setup.bat.<br>As of 8/15/2023, the only main menu script is Latitude_5320_Setup.bat. Once you<br>launch the script, use the keyboard to select the task that you would like to<br>perform.</p>
+<ul>
+<li>To launch a script, type the number 1-9 corresponding to the script that<br>you want to execute and then press enter. This will execute the script that<br>you have selected. For example, if you entered the number corresponding<br>to &quot;Prepare Laptop&quot;, then the laptop preparation script will begin.</li>
+<li>To perform a misc. task, type the letter a, s, d, f, etc. corresponding<br>to the task that you want to perform and then press enter. This will perform<br>the task that you chose. For example, if you entered the letter corresponding<br>to &quot;Clear logs directory&quot;, then all files in the logs directory will be deleted.</li>
+</ul>
+<p>The setup scripts will walk you through the setup process step-by-step. All dependencies<br>for the setup process are provided with a clean clone of this root directory or will<br>be acquired by the script. The dependencies that are provided with the script are<br>found in the lib folder. The dependencies that are downloaded by the script are found<br>in the installers folder.</p>
+<p>All script logs can be found in the logs directory. The scripts will log all events<br>to a file with the service tag of the corresponding device as the name of the log.<br>For example, if the device is 57HCRL3, then the log will be called 57HCRL3.log.<br>Logs are also generated for Dell Command Update, the KMS, Firefox, Chrome, and Zoom<br>with names like &lt;service_tag&gt;_Zoom.log.</p>
+<p>A clean clone of this directory does not include the logs and installers directory.<br>The setup scripts will generate these directories when needed.</p>
+<p>Fast mode in the script will automatically continue when the script presents<br>the &quot;Press space to continue the script. . .&quot; prompt. The script will still stop<br>when you are asked for a specific input (1, 2, 3, y, n, etc.) or when you are asked<br>to confirm something (&quot;Press y to confirm. . .&quot;).</p>
+<p>The local logging feature will only generate local logs for local accounts with<br>admin privileges. If you are logged in as a non-privileged user, no actions are<br>kept in a local log until the script is escalated to have admin privileges. Then,<br>the script generates a local log in the Desktop of the admin that the script is<br>running as.</p>
+<h2 id="important-notes">Important Notes</h2>
+<p>You should be familiar with the manual configuration process before<br>you use the script so that you know exactly what changes the script is performing<br>and can identify any bugs in case the script fails. It is also handy to know these<br>setup instructions in case you need to prep a new device model and aren&#39;t sure if<br>the script will work properly with the new model.</p>
+<p>The script may sometimes freeze or present you with a completely blank screen.<br>This is a bug with batch scripts.</p>
+<ul>
+<li>To work around this issue, select the script window with your cursor<br>and press the space key. You may need to press the space key several times.<br>Eventually, the script will display the proper interface and continue.</li>
+</ul>
+<p>While the script is performing a task like registry changes or an update installation,<br>it will store any inputs that you enter and then apply those inputs after it is done<br>with that task. For example, if you press the space key three times during an<br>installation task, then the script may skip three messages after the installation<br>task is finished.</p>
+<ul>
+<li>To avoid this issue, please only send inputs when the script asks you to do<br>so and please only send one input at a time (don&#39;t spam the keyboard).</li>
+</ul>
+<p>When the script prompts you &quot;Press space to continue the script. . .&quot;, please<br>only press alphanumeric characters, the space bar, or the enter key. Pressing<br>other characters (like the arrow keys) may cause the script to behave unpredictably.</p>
+<ul>
+<li>To avoid this issue, please <strong>only use the space key to continue</strong>.</li>
+</ul>
+<p>When entering a password, avoid pressing the backspace key because it may sometimes<br>erase more than one character when you have special characters in your password.</p>
+<ul>
+<li>To avoid this issue, please <strong>do not use the backspace key for password input</strong>.<br>If you input the wrong character, please press Enter and input the password starting<br>from the beginning again.</li>
+</ul>
+<p>If Dell Command | Update has installed all updates and wants you to restart your<br>device, then the Dell Command | Update CLI call in the update script will generate<br>an empty DCU log file and return an error.</p>
+<ul>
+<li>To avoid this issue, restart the computer if you encounter this bug. The restart<br>will apply all updates and the update script will function normally (allow you<br>to progress after DCU CLI) after all DCU updates are fully installed.</li>
+</ul>
+<p>Sometimes the installation of Firefox may fail and produce no error logs. It is<br>difficult to figure out why because there are no logs, but it could be because the<br>Firefox .msi installer uses a non-standard msiexec argument format.</p>
+<ul>
+<li>To workaround this issue, the script will try to install Firefox again.</li>
+</ul>
+<p>Please make sure to read the script&#39;s instructions carefully.</p>
+<h2 id="latitude-5320-laptop_setup_prep-bat">Latitude 5320 - Laptop_Setup_prep.bat</h2>
+<p>This script prepares the system configuration of a laptop before deployment to<br>a user. This script should be run from an admin account.</p>
+<p>This script can be run on a freshly imaged laptop or on a returned laptop that<br>had already been prepped. The script will automatically skip or allow you to skip<br>certain sections that are specific to freshly imaged laptops, like Microsoft Office<br>licensing and BitLocker.</p>
+<p>If Microsoft Office is already licensed, then the script will skip the KMS installation<br>step.</p>
+<p>If BitLocker is enabled and on, then the script will skip all BitLocker steps. </p>
+<ul>
+<li>The script will run the BitLocker sections if BitLocker is enabled but off --<br>this is the case when the drive is unencrypted but there exists a PIN and recovery<br>password for the drive when BitLocker is turned on. New BitLocker protectors are<br>made and applied in case the old protectors had been lost (the recovery password<br>file was never saved).</li>
+</ul>
+<h3 id="table-of-contents-">Table of Contents:</h3>
+<ul>
+<li>Check Admin</li>
+<li>Check Internet</li>
+<li>Check Date and Time</li>
+<li>Input: Department</li>
+<li>Start KMS</li>
+<li>Set Computer Name</li>
+<li>Disable Windows 11 Upgrade</li>
+<li>Set Local Accounts by Department</li>
+<li>Check Microsoft Office Licensing</li>
+<li>Revert to OEM Windows License</li>
+<li>BitLocker PIN Generation</li>
+<li>Turn On BitLocker</li>
+<li>BitLocker Local Group Policies</li>
+<li>BitLocker Recovery Password File Generation</li>
+<li>Set Default User Programs Globally</li>
+<li>BIOS Instructions</li>
+</ul>
+<p>After this script has finished, it will return you to the main menu.</p>
+<h2 id="latitude-5320-laptop_setup_update-bat">Latitude 5320 - Laptop_Setup_update.bat</h2>
+<p>This script updates Windows, Dell Command Update, Firefox, Chrome, and Zoom on a<br>laptop. This script should be run from an admin account.</p>
+<h3 id="table-of-contents-">Table of Contents:</h3>
+<ul>
+<li>Check Admin</li>
+<li>Check Internet</li>
+<li>Begin Windows Update</li>
+<li>Dell Command Update</li>
+<li>Firefox Update</li>
+<li>Chrome Update</li>
+<li>Zoom Update</li>
+<li>Windows Update Check</li>
+</ul>
+<p>After this script has finished, it will ask if you would like to restart or return<br>to the main menu.</p>
+<h2 id="latitude-5320-user_setup_create-bat">Latitude 5320 - User_Setup_create.bat</h2>
+<p>This script creates a local user on the laptop. This script should be run from an<br>admin account.</p>
+<h3 id="table-of-contents-">Table of Contents:</h3>
+<ul>
+<li>Check Admin</li>
+<li>Input: Username</li>
+<li>Input: Fullname</li>
+<li>User Creation Confirmation</li>
+<li>User Creation</li>
+</ul>
+<p>After this script has finished, it will ask if you would like to log out of the<br>current user or return to the main menu.</p>
+<h2 id="latitude-5320-user_setup_configure-bat">Latitude 5320 - User_Setup_configure.bat</h2>
+<p>This script configures a local user&#39;s environment to match a set of specifications.<br>This script should be run from <strong>the user whose environment is being configured</strong>,<br>which is usually the user account set up in User_Setup_create.bat. You should log<br>in as that user and run the script while logged in as that user.</p>
+<h3 id="table-of-contents-">Table of Contents:</h3>
+<ul>
+<li>Check Admin</li>
+<li>Input: Local Group Policy Update Interval</li>
+<li>Set Default Applications</li>
+<li>Set Firefox to Not Ask to be Default</li>
+<li>Set Microsoft Word to Install Updates Only</li>
+<li>Disable First-Run Experience and Default Browser Prompt in Edge</li>
+<li>Disable OneDrive from Running on Startup</li>
+<li>Dismiss Windows Security Warnings</li>
+<li>Disable Sign-In Info to Finish Device Setup After an Update</li>
+<li>Set Search Bar to be Hidden</li>
+<li>Set Cortana to be Hidden</li>
+<li>Set Taskbar Shortcuts</li>
+<li>Set Notification Settings</li>
+<li>Update Local Group Policy, Registry, and Explorer Desktop Environment</li>
+</ul>
+<p>After this script has finished, it will ask if you would like to log out of the<br>current user or return to the main menu.</p>
+<h1 id="how-to-modify-contribute-maintain-the-scripts">How to Modify/Contribute/Maintain the Scripts</h1>
+<p>The contents in this section are notes for developers that need to modify or<br>contribute to the script.</p>
+<ul>
+<li><p>Adding a new script for a device (Windows)</p>
+<ol>
+<li>Make a new directory in the root with a name like &lt;device_name&gt;_scripts</li>
+<li>In the new script directory, make a copy of the old setup scripts with the<br>same names as the old setup scripts:<ul>
+<li>Laptop_Setup_prep.bat</li>
+<li>Laptop_Setup_update.bat</li>
+<li>User_Setup_create.bat</li>
+<li>User_Setup_configure.bat</li>
+</ul>
+</li>
+<li>Copy the main menu script to the root (same directory) with a new name like<br>&lt;device_name&gt;_Setup.bat and make the following modifications:<ul>
+<li>Replace %script_path% with the path of the new scripts directory</li>
+<li>Replace any mentions of the old device name with the new device name -- for<br>example, if you&#39;re making a main menu script for an Optiplex 7090, replace<br>all mentions of &quot;Latitude 5320&quot; with &quot;Optiplex 7090&quot;.</li>
+</ul>
+</li>
+<li>Make the necessary changes to port over the old setup scripts to the new device.</li>
+</ol>
+</li>
+<li><p>__common.bat is meant to be a function library for all scripts to use. You should<br>only modify __common.bat to fix bugs or to add a new common function. __common.bat<br>should never be run directly and never be invoked from a main menu script like<br>Latitude_5320_Setup.bat.</p>
+</li>
+<li><p>defaultapps.xml holds the default apps for the default user. This file is used<br>by Laptop_Setup_prep.bat to set the default apps for the default user and thereby<br>the default apps for all new users.</p>
+</li>
+<li><p>7-Zip-Installer-x64.txt is not used by the script, but is provided for the<br>convenience of technicians using the script in case the target device does not<br>have 7-Zip. All devices (Windows) should have 7-Zip included in the image so<br>this is not necessary. The script requires 7-Zip to decrypt password hashes.<br>The script also detects if 7-Zip is missing from the system and gives a warning<br>to the technician if that is the case.</p>
+</li>
+<li><p>hashes/ contains an encrypted .7z file containing the hashes that the scripts use<br>to check if a password is correct or not. The hashes are decrypted and extracted<br>to hashes/ using a password that the technician knows. The script will delete all<br>hashes from the directory once the correct password is input, leaving only the<br>.7z file.</p>
+</li>
+<li><p>utils/ is a collection of miscellaneous utility scripts that are meant for developers<br>of this script. None of the setup scripts call any scripts in utils/.</p>
+</li>
+</ul>
+<h2 id="creating-modifying-passwords">Creating/Modifying Passwords</h2>
+<ul>
+<li><p>To modify the hashes.7z password:</p>
+<ol>
+<li>Unzip the archive using the hashes password and then delete hashes.7z</li>
+<li>Select all of the hashes using Ctrl+LeftMouse</li>
+<li>Right click on your selection, press 7-Zip in the context (right-click) menu<br>and &quot;Add to archive...&quot;,</li>
+<li>At the top of the 7-Zip window, rename the archive to &quot;hashes.7z&quot;</li>
+<li>In the &quot;Encryption&quot; section in the bottom right, enter the new password in<br>the password fields, make sure that the encryption method is AES-256, check<br>the &quot;Encrypt file names&quot; box, and press OK</li>
+</ol>
+</li>
+<li><p>To create a new hash for a password:</p>
+<ol>
+<li>Create a file in a directory named &quot;password.txt&quot;</li>
+<li>In the file, type the password, type a space after the last character of the<br>password, and then type a newline (Enter). Make sure to save the file</li>
+<li>Open cmd and cd to the directory with password.txt</li>
+<li>Type <code>certutil -hashfile password.txt SHA512</code>. The command will output<br>the hash in the cmd window. It should be a long string of alphanumeric characters.</li>
+<li>Create a new file with the name &lt;password_name&gt;.hash. The file name should<br>describe what the password is used for -- for example, user.hash for the<br>default password for new users.</li>
+<li>Paste the hash directly into the &lt;password_name&gt;.hash file. There should<br>be no whitespaces in the file.</li>
+<li>Re-archive and re-encrypt the hashes.7z password by following the instructions<br>&quot;To modify the hashes.7z password&quot; above, but you may use the same encryption<br>password.</li>
+</ol>
+</li>
+</ul>
+<h2 id="creating-a-new-default-apps-xml-file">Creating a New Default Apps .xml File</h2>
+<ul>
+<li>To create a new default apps .xml file:<ol>
+<li>Login as any user and set the default apps to the default apps that you would<br>like for all users.</li>
+<li>Open a terminal and run the command below -- this command will create an .xml<br>file with the filetype and program associations currently set in the current<br>directory:<br><code>Dism /Online /Export-DefaultAppAssociations:&quot;%cd%\defaultapps.xml&quot; &gt;nul</code></li>
+<li>Delete the old defaultapps.xml from lib\ and replace it with the new file.</li>
+</ol>
+</li>
+</ul>
+<h1 id="credits">Credits</h1>
+<p>molofgarb</p>

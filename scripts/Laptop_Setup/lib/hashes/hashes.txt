@@ -1,0 +1,1 @@
+replace this file with hashes.7z which is an encrypted archive that contains *.hash files with hashes of passwords
