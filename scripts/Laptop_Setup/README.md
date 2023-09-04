@@ -23,8 +23,7 @@ D:\Laptop_Setup\
     but if the script has behaving oddly, try running it from a path with no spaces.
 
 To start the script, run (double-click in File Explorer) a main menu script in
-this directory. Main menu scripts are usually named <device_name>_Setup.bat.
-As of 8/15/2023, the only main menu script is Latitude_5320_Setup.bat. Once you
+this directory. Main menu scripts are usually named <device_name>_Setup.bat. Once you
 launch the script, use the keyboard to select the task that you would like to
 perform.
   - To launch a script, type the number 1-9 corresponding to the script that
@@ -44,7 +43,6 @@ in the installers folder.
 
 All script logs can be found in the logs directory. The scripts will log all events 
 to a file with the service tag of the corresponding device as the name of the log. 
-For example, if the device is 57HCRL3, then the log will be called 57HCRL3.log. 
 Logs are also generated for Dell Command Update, the KMS, Firefox, Chrome, and Zoom
 with names like <service_tag>_Zoom.log.
 
